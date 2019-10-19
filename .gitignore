@@ -1,0 +1,12 @@
+# Compiled
+*.wasm
+*.bc
+
+# WebIDL
+WebIDLGrammar.pkl
+parser.out
+
+src/glue.cpp
+src/glue.js
+
+
