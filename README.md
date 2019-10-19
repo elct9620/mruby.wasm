@@ -18,7 +18,7 @@ To compile project, please make sure your `emsdk` is already configured with `$E
 
 Compile mruby and generate `libmruby.bc`
 
-```
+```bash
 rake libmruby
 ```
 
@@ -26,7 +26,7 @@ rake libmruby
 
 Generate `glue.cpp` and `glue.js` for WebIDL
 
-```
+```bash
 rake mruby.idl
 ```
 
@@ -34,7 +34,7 @@ rake mruby.idl
 
 Generate mruby's WebAssembly file
 
-```
+```bash
 rake mruby.wasm
 ```
 
@@ -42,8 +42,27 @@ rake mruby.wasm
 
 If you want to minify for production, please add `MINIFY` environment
 
-```
+```bash
 MINIFY=1 rake mruby.wasm
+```
+
+## Play with mruby.wasm
+
+Prepare mruby.wasm
+
+```bash
+# Create mruby.html
+rake mruby.html
+
+# Serve mruby.wasm
+ruby -run -e httpd .
+```
+
+Goto [http://localhost:8080/mruby.html](http://localhost:8080/mruby.html) and open the console to execute ruby code.
+
+```js
+var ruby = new Ruby()
+ruby.Execute('puts "Hello World"')
 ```
 
 ## References

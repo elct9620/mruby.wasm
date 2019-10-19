@@ -38,4 +38,6 @@ MRuby::CrossBuild.new('wasm') do |conf|
     exts.executable = '' # '.exe' if Windows
     exts.library = '.bc'
   end
+
+  conf.gembox File.expand_path('wasm', File.dirname(__FILE__))
 end

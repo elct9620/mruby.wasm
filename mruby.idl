@@ -1,2 +1,4 @@
 interface Ruby {
+  void Ruby();
+  void Execute(DOMString code);
 };

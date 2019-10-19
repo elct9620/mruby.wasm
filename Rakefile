@@ -36,12 +36,20 @@ end
 task 'mruby.wasm' => %w[libmruby glue] + BINARY_CODES do
   sources = [LIBMRUBY_WASM_PATH] + BINARY_CODES
   optimize = MINIFY ? '-Oz' : ''
-  sh "emcc #{sources.join(' ')} --post-js src/glue.js #{optimize} -o mruby.wasm"
+  sh "emcc #{sources.join(' ')} " \
+     '--post-js src/glue.js --post-js src/mruby.js ' \
+     "#{optimize} -o mruby.wasm"
+end
+
+task 'mruby.html' => %w[libmruby glue] + BINARY_CODES do
+  sources = [LIBMRUBY_WASM_PATH] + BINARY_CODES
+  sh "emcc #{sources.join(' ')} " \
+     '--post-js src/glue.js --post-js src/mruby.js -o mruby.html'
 end
 
 task :clean do
   FileUtils.rm_rf(BINARY_CODES)
   FileUtils.rm_rf(['**/glue.*'])
   FileUtils.rm_rf(['WebIDLGrammar.pkl', 'parser.out'])
-  FileUtils.rm_rf(['mruby.wasm'])
+  FileUtils.rm_rf(['mruby.wasm', 'mruby.html', 'mruby.js'])
 end

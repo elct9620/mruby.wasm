@@ -1,6 +1,8 @@
 # Compiled
 *.wasm
 *.bc
+/mruby.js
+/mruby.html
 
 # WebIDL
 WebIDLGrammar.pkl
@@ -8,5 +10,3 @@ parser.out
 
 src/glue.cpp
 src/glue.js
-
-
