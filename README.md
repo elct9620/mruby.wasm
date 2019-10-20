@@ -30,29 +30,33 @@ Generate `glue.cpp` and `glue.js` for WebIDL
 rake mruby.idl
 ```
 
-### mruby.wasm
+### WebAssemtly
 
 Generate mruby's WebAssembly file
 
 ```bash
-rake mruby.wasm
+rake wasm
+rake js
+rake html
 ```
 
-> This is the default task
+> The `rake html` is default task, you can specify which output you wants
 
 If you want to minify for production, please add `MINIFY` environment
 
 ```bash
-MINIFY=1 rake mruby.wasm
+MINIFY=1 rake html
 ```
 
-## Play with mruby.wasm
+## Usage
 
-Prepare mruby.wasm
+### Local PlayGround
+
+Prepare WebAssembly
 
 ```bash
 # Create mruby.html
-rake mruby.html
+rake html
 
 # Serve mruby.wasm
 ruby -run -e httpd .
@@ -64,6 +68,18 @@ Goto [http://localhost:8080/mruby.html](http://localhost:8080/mruby.html) and op
 var ruby = new Ruby()
 ruby.Execute('puts "Hello World"')
 ```
+
+### Production
+
+Prepare WebAssembly
+
+```
+rake js
+```
+
+Copy `mruby.js` and `mruby.wasm` to your project and load WebAssembly by yourself.
+
+> Currently this project is for prototype to test use mruby on browser, it is not stable!
 
 ## References
 
