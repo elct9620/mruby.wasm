@@ -19,6 +19,7 @@ def create(format = :wasm)
   optimize = MINIFY ? '-Oz' : ''
   sh "emcc #{sources.join(' ')} " \
      '--post-js src/glue.js --post-js src/mruby.js ' \
+     '--shell-file template/playground.html' \
      "#{optimize} -o mruby.#{format}"
 end
 
@@ -61,4 +62,4 @@ namespace :clean do
 end
 
 desc 'Clean compiled files'
-task clean: %i[binary glue idl dist]
+task clean: %i[clean:binary clean:glue clean:idl clean:dist]
