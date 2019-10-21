@@ -42,7 +42,16 @@
 
     <div class="uk-container">
       <div class="uk-column-1-2 uk-column-divider">
-        <div id="source">puts "Hello World"</div>
+        <div id="source">puts "Hello World"
+
+def fib(n)
+  return n if n < 2
+  fib(n-2) + fib(n-1)
+end
+
+start = Time.now.to_f
+puts "Fib(20) = #{fib(20)}"
+puts "Use: #{Time.now.to_f - start}s"</div>
         <div id="output-wrapper" class="uk-padding uk-panel uk-background-muted"><div id="output"></div></div>
       </div>
     </div>
