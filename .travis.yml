@@ -9,7 +9,8 @@ services:
 
 before_install:
   - docker run -dit --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
-  - docker exec -it emscripten apt-get update && apt-get install ruby -y
+  - docker exec -it emscripten apt-get update
+  - docker exec -it emscripten apt-get install ruby -y
 
 script:
   - docker exec -it emscripten rake
