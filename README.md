@@ -14,6 +14,9 @@ Binding mruby to WebAssembly use WebIDL
 
 To compile project, please make sure your `emsdk` is already configured with `$EMSDK` environment and `emcc` command.
 
+> Please make sure you are use `LLVM` version instead Fastcomp version.
+> The `LLVM` version can install by use `emsdk install latest-upstream`.
+
 ### libmruby
 
 Compile mruby and generate `libmruby.bc`

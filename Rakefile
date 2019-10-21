@@ -3,7 +3,11 @@
 # Prepare Build environment
 PROJECT_ROOT = File.dirname(File.expand_path(__FILE__))
 MRUBY_WASM_CONFIG = "#{PROJECT_ROOT}/mruby_wasm_config.rb"
-EMSCRIPTEN_TOOLS = "#{ENV['EMSDK']}/fastcomp/emscripten/tools"
+EMSCRIPTEN_PATH = [
+  ENV['EMSCRIPTEN'], # CI Environment
+  "#{ENV['EMSDK']}/upstream/emscripten"
+].compact.find { |path| path != '' }
+EMSCRIPTEN_TOOLS = "#{EMSCRIPTEN_PATH}/tools"
 SOURCES = FileList['src/**/*.cpp'].exclude('**/glue.*')
 BINARY_CODES = SOURCES.ext('bc')
 LIBMRUBY_WASM_PATH = "#{PROJECT_ROOT}/mruby/build/wasm/lib/libmruby.bc"
