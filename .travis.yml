@@ -24,7 +24,6 @@ deploy:
   skip_cleanup: true
   keep_history: true
   github_token: $GITHUB_TOKEN
-  github_url: mruby-wasm.aotoki.dev
   local_dir: gh-pages
   on:
     branch: master
