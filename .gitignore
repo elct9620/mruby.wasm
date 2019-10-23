@@ -10,3 +10,6 @@ parser.out
 
 src/glue.cpp
 src/glue.js
+
+# TODO: Check for necessary
+mruby_wasm_config.rb.lock
