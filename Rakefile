@@ -60,7 +60,7 @@ end
 
 namespace :clean do
   task(:binary) { FileUtils.rm_rf(BINARY_CODES) }
-  task(:glue) { FileUtils.rm_rf(['**/glue.*']) }
+  task(:glue) { FileUtils.rm_rf(['src/glue.cpp', 'src/glue.js']) }
   task(:idl) { FileUtils.rm_rf(['WebIDLGrammar.pkl', 'parser.out']) }
   task(:dist) { FileUtils.rm_rf(['mruby.wasm', 'mruby.html', 'mruby.js']) }
 end
