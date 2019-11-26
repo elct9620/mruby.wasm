@@ -8,10 +8,10 @@ EMSCRIPTEN_PATH = [
   "#{ENV['EMSDK']}/upstream/emscripten"
 ].compact.find { |path| path != '' }
 EMSCRIPTEN_TOOLS = "#{EMSCRIPTEN_PATH}/tools"
-SOURCES = FileList['src/**/*.cpp'].exclude('**/glue.*')
+SOURCES = FileList['src/**/*.c']
 BINARY_CODES = SOURCES.ext('bc')
 LIBMRUBY_WASM_PATH = "#{PROJECT_ROOT}/mruby/build/wasm/lib/libmruby.bc"
-OBJECTS = %w[libmruby glue] + BINARY_CODES
+OBJECTS = %w[libmruby] + BINARY_CODES
 MINIFY = ENV['MINIFY'] && ENV['MINIFY'] != ''
 
 ENV['MRUBY_CONFIG'] = MRUBY_WASM_CONFIG
@@ -22,8 +22,10 @@ def create(format = :wasm)
   sources = [LIBMRUBY_WASM_PATH] + BINARY_CODES
   optimize = MINIFY ? '-Oz' : ''
   sh "emcc #{sources.join(' ')} " \
-     '--post-js src/glue.js --post-js src/mruby.js ' \
-     '--shell-file template/playground.html' \
+     '--js-library src/js/library.js ' \
+     '--pre-js src/js/object.js ' \
+     '--post-js src/js/mruby.js ' \
+     '--shell-file template/playground.html ' \
      "#{optimize} -o mruby.#{format}"
 end
 
@@ -41,9 +43,6 @@ end
 # Build tasks
 task default: :html
 task 'libmruby' => 'mruby:all'
-task 'glue' do
-  sh "python #{EMSCRIPTEN_TOOLS}/webidl_binder.py mruby.idl src/glue"
-end
 
 rule '.bc' => SOURCES do |task|
   sh "emcc -I mruby/include -I include -c #{task.source} -o #{task.name}"
@@ -60,10 +59,8 @@ end
 
 namespace :clean do
   task(:binary) { FileUtils.rm_rf(BINARY_CODES) }
-  task(:glue) { FileUtils.rm_rf(['src/glue.cpp', 'src/glue.js']) }
-  task(:idl) { FileUtils.rm_rf(['WebIDLGrammar.pkl', 'parser.out']) }
   task(:dist) { FileUtils.rm_rf(['mruby.wasm', 'mruby.html', 'mruby.js']) }
 end
 
 desc 'Clean compiled files'
-task clean: %i[clean:binary clean:glue clean:idl clean:dist]
+task clean: %i[clean:binary clean:dist]
