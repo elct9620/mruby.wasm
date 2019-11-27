@@ -13,6 +13,7 @@ BINARY_CODES = SOURCES.ext('bc')
 LIBMRUBY_WASM_PATH = "#{PROJECT_ROOT}/mruby/build/wasm/lib/libmruby.bc"
 OBJECTS = %w[libmruby] + BINARY_CODES
 MINIFY = ENV['MINIFY'] && ENV['MINIFY'] != ''
+ASSERTIONS = ENV['ASSERTIONS'] && ENV['ASSERTIONS'] != ''
 
 ENV['MRUBY_CONFIG'] = MRUBY_WASM_CONFIG
 
@@ -21,12 +22,13 @@ ENV['MRUBY_CONFIG'] = MRUBY_WASM_CONFIG
 def create(format = :wasm)
   sources = [LIBMRUBY_WASM_PATH] + BINARY_CODES
   optimize = MINIFY ? '-Oz' : ''
+  assert = ASSERTIONS ? '-s ASSERTIONS=1' : ''
   sh "emcc #{sources.join(' ')} " \
      '--js-library src/js/library.js ' \
      '--pre-js src/js/object.js ' \
      '--post-js src/js/mruby.js ' \
      '--shell-file template/playground.html ' \
-     "#{optimize} -o mruby.#{format}"
+     "#{optimize} #{assert} -o mruby.#{format}"
 end
 
 # Load mruby tasks
