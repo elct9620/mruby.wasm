@@ -31,12 +31,12 @@
    * On Update
    */
 
-  Plugin.update = function() {
+  Plugin.update = function(deltaTime) {
     ccall(
       'plugin_update',
       'null',
-      [],
-      []
+      ['number'],
+      [deltaTime]
     )
   }
 

@@ -31,7 +31,9 @@
 
             // Load Code
             Game.Plugin.execute(`
-              Game.update { puts "Hello World from JS" }
+              Game.update do |delta|
+                puts "Define in JS, deltaTime: #{delta}"
+              end
             `)
 
             // Setup Game
@@ -40,8 +42,8 @@
             })
             document.getElementById('app').appendChild(app.view)
 
-            app.ticker.add(function() {
-              Game.Plugin.update();
+            app.ticker.add(function(deltaTime) {
+              Game.Plugin.update(deltaTime);
             })
           }
         },
