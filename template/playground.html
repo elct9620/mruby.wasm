@@ -32,22 +32,43 @@
             // Load Code
             Game.Plugin.execute(`
               interval = 0
-              dir_x = 1
-              dir_y = 1
+              moves = {}
+
+              class Move
+                def initialize(sprite)
+                  @sprite = sprite
+                  @sprite.x = Random.rand(800)
+                  @sprite.y = Random.rand(600)
+                  @dir_x = 1 + Random.rand(3)
+                  @dir_y = 1 + Random.rand(3)
+                end
+
+                def update
+                  @sprite.x += @dir_x
+                  @sprite.y += @dir_y
+                  @dir_x = @dir_x * -1 if touch_bound_x?
+                  @dir_y = @dir_y * -1 if touch_bound_y?
+                end
+
+                def touch_bound_x?
+                  @sprite.x >= 800 || @sprite.x <= 0
+                end
+
+                def touch_bound_y?
+                  @sprite.y >= 600 || @sprite.y <= 0
+                end
+              end
+
               Game.update do |delta|
+                if moves.size <= 1000
+                  1000.times { |idx| moves[idx] ||= Move.new(Sprite[idx]) }
+                end
+
                 interval += delta
                 next unless interval >= 1 # 0.001s
 
-                sprite = Sprite[0] # Create JavaScript Proxy
-                next if sprite.nil?
-
-                sprite.x += dir_x
-                sprite.y += dir_y
-
+                moves.each { |_, move| move.update }
                 interval = 0
-
-                dir_x = dir_x * -1 if sprite.x >= 800 || sprite.x <= 0
-                dir_y = dir_y * -1 if sprite.y >= 600 || sprite.y <= 0
               end
             `)
 
@@ -59,9 +80,13 @@
               width: 800, height: 600
             })
 
-            var banny = new PIXI.Sprite(bannyTexture);
-            app.stage.addChild(banny);
-            Game.AddSprite(banny);
+            var i = 0;
+            var amount = 1000;
+            for(i; i < amount; i++) {
+              var banny = new PIXI.Sprite(bannyTexture);
+              app.stage.addChild(banny); // Show Sprite on Stage
+              Game.AddSprite(banny); // Binding to mruby
+            }
 
             document.getElementById('app').appendChild(app.view)
 
