@@ -31,15 +31,38 @@
 
             // Load Code
             Game.Plugin.execute(`
+              interval = 0
+              dir_x = 1
+              dir_y = 1
               Game.update do |delta|
-                puts "Define in JS, deltaTime: #{delta}"
+                interval += delta
+                next unless interval >= 1 # 0.001s
+
+                sprite = Sprite[0] # Create JavaScript Proxy
+                next if sprite.nil?
+
+                sprite.x += dir_x
+                sprite.y += dir_y
+
+                interval = 0
+
+                dir_x = dir_x * -1 if sprite.x >= 800 || sprite.x <= 0
+                dir_y = dir_y * -1 if sprite.y >= 600 || sprite.y <= 0
               end
             `)
+
+            // Prepare Assets
+            var bannyTexture = PIXI.Texture.from('https://pixijs.io/examples/examples/assets/bunny.png');
 
             // Setup Game
             const app = new PIXI.Application({
               width: 800, height: 600
             })
+
+            var banny = new PIXI.Sprite(bannyTexture);
+            app.stage.addChild(banny);
+            Game.AddSprite(banny);
+
             document.getElementById('app').appendChild(app.view)
 
             app.ticker.add(function(deltaTime) {
