@@ -38,29 +38,29 @@
                 class Move
                   def initialize(sprite)
                     @sprite = sprite
-                    @sprite.x = Random.rand(800)
-                    @sprite.y = Random.rand(600)
+                    @x = Random.rand(800)
+                    @y = Random.rand(600)
                     @dir_x = 1 + Random.rand(3)
                     @dir_y = 1 + Random.rand(3)
                   end
 
                   def update
-                    @sprite.x += @dir_x
-                    @sprite.y += @dir_y
+                    @sprite.x = @x += @dir_x
+                    @sprite.y = @y += @dir_y
                     @dir_x = @dir_x * -1 if touch_bound_x?
                     @dir_y = @dir_y * -1 if touch_bound_y?
                   end
 
                   def touch_bound_x?
-                    @sprite.x >= 800 || @sprite.x <= 0
+                    @x >= 800 || @x <= 0
                   end
 
                   def touch_bound_y?
-                    @sprite.y >= 600 || @sprite.y <= 0
+                    @y >= 600 || @y <= 0
                   end
                 end
 
-                amount = 1000
+                amount = 2500
                 Game.update do |delta|
                   if moves.size <= amount
                     amount.times { |idx| moves[idx] ||= Move.new(Sprite[idx]) }
@@ -83,7 +83,7 @@
               })
 
               var i = 0;
-              var amount = 1000;
+              var amount = 2500;
               for(i; i < amount; i++) {
                 var banny = new PIXI.Sprite(bannyTexture);
                 app.stage.addChild(banny); // Show Sprite on Stage

@@ -1,6 +1,7 @@
 # Compiled
 *.wasm
 *.bc
+*.map
 /mruby.js
 /mruby.html
 

@@ -19,6 +19,8 @@ ENV['MRUBY_CONFIG'] = MRUBY_WASM_CONFIG
 
 # Helper
 
+# TODO: Implement options maker
+# rubocop:disable Metrics/MethodLength
 def create(format = :wasm)
   sources = [LIBMRUBY_WASM_PATH] + BINARY_CODES
   optimize = MINIFY ? '-Oz' : ''
@@ -28,8 +30,11 @@ def create(format = :wasm)
      '--pre-js src/js/object.js ' \
      '--post-js src/js/mruby.js ' \
      '--shell-file template/playground.html ' \
+     '-s ALLOW_MEMORY_GROWTH=1 ' \
+     '-g4 --source-map-base / ' \
      "#{optimize} #{assert} -o mruby.#{format}"
 end
+# rubocop:enable Metrics/MethodLength
 
 # Load mruby tasks
 begin
